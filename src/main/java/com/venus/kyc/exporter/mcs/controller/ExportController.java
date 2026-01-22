@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/api")
@@ -30,7 +32,8 @@ public class ExportController {
     public ResponseEntity<?> export(@RequestParam(defaultValue = "false") boolean sendEmail) {
         try {
             byte[] content = excelExportService.exportToExcel();
-            String filename = "export.xlsx";
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String filename = "export_" + timestamp + ".xlsx";
 
             if (sendEmail) {
                 emailService.sendFileByEmail(content, filename);

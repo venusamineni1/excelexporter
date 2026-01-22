@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 @Component
@@ -32,7 +34,8 @@ public class ExportRunner implements CommandLineRunner {
                 System.out.println("Starting SQL to Excel export from command line...");
 
                 byte[] content = excelExportService.exportToExcel();
-                String filename = "export_cli.xlsx";
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+                String filename = "export_" + timestamp + ".xlsx";
 
                 // Save locally
                 Path path = Paths.get(filename);
